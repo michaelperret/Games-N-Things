@@ -15,6 +15,7 @@ $(document).ready(function () {
     var play = true;
     var highScore = 0;
     var score;
+    var scoreData;
 
     //increment speed
     var incSpeed = function(){
@@ -75,6 +76,11 @@ $(document).ready(function () {
 
         return nextPosition;
     }
+
+
+
+
+
 
     // Check if snake has collided with walls or itself
     function checkGameOver(position, snakeBody) {
@@ -137,6 +143,10 @@ $(document).ready(function () {
 
         if(score>highScore){
             highScore = score;
+            scoreData = {
+                score: highScore
+            };
+            postScore();
         }
         play = confirm('GAME OVER BITCHES\nClick "OK" to play again');
         if(play){
@@ -147,6 +157,28 @@ $(document).ready(function () {
 //        console.log(poop);
     }
 
+//    function getDBHighScore() {
+//        $.ajax(
+//            url:
+//        )
+//    }
+
+    function postScore() {
+
+        scoreData = JSON.stringify(scoreData);
+        $.ajax({
+            url: '/postscore/',
+            type: 'POST',
+            dataType: 'json',
+            data: scoreData,
+            success: function(response) {
+                console.log(response);
+            },
+            error: function(response){
+                console.log("OH FUCK: " + response)
+            }
+        });
+    }
 
 
     function paintCanvas() {
